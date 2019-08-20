@@ -1,0 +1,9 @@
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: url(../img/02d.jpg) no-repeat center;
+	background-size: cover;
+}
