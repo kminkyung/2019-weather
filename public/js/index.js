@@ -92,7 +92,7 @@ function cityInit() {
 			}
 
 		};
-		ajax.open("GET", "json/city.json", true);
+		ajax.open("GET", "../json/city.json", true);
 		ajax.send(); 
 	}
 
