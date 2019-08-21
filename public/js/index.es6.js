@@ -11,11 +11,62 @@ var weeklyURL = weeklyAPI + '?appid=' + key + '&units=' + units;
 // 프로그램 시작
 init();
 function init(){
+	wrapChg("M");
 	var ajax = new XMLHttpRequest(); //통신용 개체생성
 	ajax.onreadystatechange = cityFn;
 	ajax.open('GET', cityURL, true);
 	ajax.send();
 }
+
+// wrapChg - 화면 Show/Hide
+/* function wrapChg(type) {
+	switch(type) {
+		case "D":
+			document.querySelector(".wrap-daily").style.display = "block";
+			document.querySelector(".wrap-weekly").style.display = "none";
+			document.querySelector(".wrap-main").style.display = "none";
+			break; //break를 만나면 switch문을 빠져나간다.
+		case "W":
+			document.querySelector(".wrap-daily").style.display = "none";
+			document.querySelector(".wrap-weekly").style.display = "block";
+			document.querySelector(".wrap-main").style.display = "none";
+			break;
+		default:
+				document.querySelector(".wrap-daily").style.display = "none";
+				document.querySelector(".wrap-weekly").style.display = "none";
+				document.querySelector(".wrap-main").style.display = "block";
+			break;
+	}
+} */
+function wrapChg(type) {
+	switch(type) {
+		case "D":
+			document.querySelector(".wrap-daily").classList.add("d-block");
+			document.querySelector(".wrap-daily").classList.remove("d-none");
+			document.querySelector(".wrap-weekly").classList.add("d-none");
+			document.querySelector(".wrap-weekly").classList.remove("d-block");
+			document.querySelector(".wrap-main").classList.add("d-none");
+			document.querySelector(".wrap-main").classList.remove("d-block");
+			break; //break를 만나면 switch문을 빠져나간다.
+		case "W":
+			document.querySelector(".wrap-daily").classList.add("d-none");
+			document.querySelector(".wrap-daily").classList.remove("d-block");
+			document.querySelector(".wrap-weekly").classList.add("d-block");
+			document.querySelector(".wrap-weekly").classList.remove("d-none");
+			document.querySelector(".wrap-main").classList.add("d-none");
+			document.querySelector(".wrap-main").classList.remove("d-block");
+			break;
+		default:
+				document.querySelector(".wrap-daily").classList.add("d-none");
+				document.querySelector(".wrap-daily").classList.remove("d-block");
+				document.querySelector(".wrap-weekly").classList.add("d-none");
+				document.querySelector(".wrap-weekly").classList.remove("d-block");
+				document.querySelector(".wrap-main").classList.add("d-block");
+				document.querySelector(".wrap-main").classList.remove("d-none");
+			break;
+	}
+}
+
 
 // 도시정보 가져오기
 function cityFn() {
@@ -50,6 +101,28 @@ function cityFn() {
 // 데일리정보 가져오기
 function dailyFn() {
 	if(this.readyState == 4 && this.status == 200) {
-		console.log(JSON.parse(this.responseText));
+		let res = JSON.parse(this.responseText);
+		let iconSrc = `../img/${res.weather[0].icon}.png`; 
+		let temp = `현재온도: <b>${res.main.temp}</b>℃`;
+		let desc = `현재날씨: ${res.weather[0].main}`;
+		let _wrap = document.querySelector(".wrap-daily");
+		let _title = document.createElement("div");
+		let _img = document.createElement("div");
+		let _temp = document.createElement("div");
+		let _desc = document.createElement("div");
+		_title.innerHTML = '오늘의 날씨';
+		_img.innerHTML = `<img src="${iconSrc}" class="w-50">`; //template string enter쳐도됨
+		_temp.innerHTML = temp;
+		_desc.innerHTML = desc;
+		_title.setAttribute("class", "text-center py-3 fa-3x")
+		_img.setAttribute("class", "text-center py-3")
+		_temp.setAttribute("class", "text-center py-3 fa-2x")
+		_desc.setAttribute("class", "text-center py-3 fa-2x")
+		_wrap.innerHTML = '';
+		_wrap.appendChild(_title);
+		_wrap.appendChild(_img);
+		_wrap.appendChild(_temp);
+		_wrap.appendChild(_desc);
+		wrapChg("D");
 	}
 }
