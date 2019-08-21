@@ -1,0 +1,85 @@
+<script>
+// JS의 중요 객체와 메소드 - Array, String, Date, Math
+// 메소드(method) - 객체 안의 선언된 함수.
+const log = console.log;
+const clear = console.clear;
+
+//ES5 객체
+const human2 = {
+	age: 25,
+	name: "홍길동",
+	speak: function() {
+		log(this.name+"이(가) 말한다");
+	}
+}
+const human = {
+	age: 28,
+	name: "홍길순",
+	speak: function() {
+		log(this.name+"이(가) 말한다");
+	}
+}
+
+log(human.age);
+log(human.name);
+human.speak();
+
+log(human2.name);
+human2.speak();
+
+clear();
+var arr3 = new Array();
+// arr3는 객체 Array 의 복사형인 instance가 된다.
+log(arr3.length);
+// Array 가 length속성을 가지고 있으므로 length를 선언안했지만 접근가능. Array는 method 
+arr3.speak = function () {
+	log("저는 배열입니다.");
+}
+arr3.speak();
+// Array 의 instance 인 arr3에 모든 속성을 부여할 수 있지만 원본인 Array에는 영향을 미치지 않는다.
+
+// IIFE 로 Array 형태의 객체 만들기
+const Human = (function(){
+	this.age;
+	this.name;
+	function Human(_age, _name) {
+		this.age = _age;
+		this.name = _name;
+	}
+	Human.prototype.speak = function() {
+		console.log(this.name + "이(가)" + this.age + "세 라고 말한다.");
+	}
+	return Human;
+}
+());
+
+clear();
+var hong = new Human(30, "홍길순");
+var hong2 = new Human(28, "홍길동");
+hong.speak();
+hong2.speak();
+
+
+const Slide = (function(){
+	//생성자(객체명과 똑같은 함수) constructor
+	function Slide(_obj, _type, duraton, delay) {
+
+	}
+	return Slide;
+}());
+
+//ES6 객체
+class HumanES6 {
+	constructor(_age, _name) { //function Human() {}과 같음
+		this.age = _age;
+		this.name = _name;
+	}
+	speak() {
+		log(this.name + "이(가) " + this.age + " 세 라고 외칩니다.");
+	}
+}
+const hong3 = new HumanES6(25, "홍길만");
+const hong4 = new HumanES6(28, "홍길영");
+hong3.speak();
+hong4.speak();
+</script>
