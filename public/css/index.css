@@ -7,3 +7,10 @@ body {
 	background: url(../img/02d.jpg) no-repeat center;
 	background-size: cover;
 }
+
+.wrap-daily {
+	color: #fff;
+	padding: 2rem;
+	background-color: rgba(0, 0, 0, 0.7);
+	/* border: 1px solid #666; */
+}
