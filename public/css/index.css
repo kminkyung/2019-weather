@@ -7,10 +7,69 @@ body {
 	background: url(../img/sky.jpg) no-repeat center;
 	background-size: cover;
 }
+.container {padding: 0}
+.wrap {
+	height: 100%;
+	width: 100%;
+}
+.navi {
+	height: 60px;
+	line-height: 60px;
+}
+.navi > li {
+	flex: 1 0 33.3333%;
+	cursor: pointer;
+	background-color: #333;
+	color: #aaa;
+}
+.navi > .navi-sel {
+	background-color: #111;
+	border: 1px solid #666;
+	color: lemonchiffon;
+	border-bottom: none;
+}
 
-.wrap-daily {
+.wrap > .conts {
+	height: calc(100% - 60px);
 	color: #fff;
-	padding: 2rem;
 	background-color: rgba(0, 0, 0, 0.7);
-	/* border: 1px solid #666; */
+	overflow: auto;
+}
+.wrap-daily > .conts {padding: 2rem;}
+.wrap-weekly > .conts {
+	display: flex;
+	align-items: flex-start;
+	align-content: flex-start;
+	flex-wrap: wrap;
+}
+.w-item {
+	display: flex;
+	align-items: center;
+	flex: 0 0 100%;
+	border-bottom: 1px solid #999;
+}
+.w-item > div {
+	flex: 0 0 25%;
+	padding: 1.5rem;
+}
+.w-item > ul {flex: 0 0 75%;}
+.w-item > div > img {max-width: 150px;}
+.w-item .w-temp > span {
+	font-weight: bold;
+	font-size: 1.25rem;
+}
+.w-item .w-desc > :first-child {
+	font-size: 1.125rem;
+}
+.w-item .w-desc > :last-child {
+	color: #ddd;
+}
+.w-item .w-date {
+	font-size: 0.875rem;
+	color: #aaa;
+}
+
+
+@media screen and (min-width: 768px) {
+	.w-item {flex: 0 0 50%;}
 }

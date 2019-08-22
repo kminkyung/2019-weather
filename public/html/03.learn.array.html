@@ -1,0 +1,207 @@
+<script>
+// ES6 - Array.isArray(배열변수) - 변수가 배열인지 아닌지를 판단
+var log = console.log;
+var clear = console.clear;
+
+
+var obj = {
+	a: 10,
+	b: 20,
+}
+
+var arr = [1, 2, 3];
+
+var arr1 = new Array(1, 2, 3)
+
+var arr2 = new Array();
+arr2[0] = 1;
+arr2[1] = 2;
+arr2[2] = 3;
+
+var arr3 = [];
+arr3.push(1);
+arr3.push(2);
+arr3.push(3);
+
+log(arr, arr1, arr2, arr3);
+
+log(Array.isArray(arr)); //true
+log(Array.isArray(obj)); //false. 배열이 아닌애들은 전부 false
+//return 값이 없다면 console에 undefined로 나올 것임
+
+//여러 배열을 합치기 - concat
+var arr = [1, 2, 3];
+var arr2 = [4, 5];
+var arr3 = arr.concat(arr2);
+log(arr3);
+
+// push, pop, unshift, shift, splice
+var arr = [1, 2, 3, 4, 5];
+arr.push(6);
+
+var num = arr.pop();
+log(num, arr);
+var num = arr.pop();
+log(num, arr);
+var num = arr.pop();
+log(num, arr);
+var num = arr.pop();
+log(num, arr);
+var num = arr.pop();
+log(num, arr);
+//log(arr[5]);
+
+clear();
+var arr = [1, 2, 3];
+var num = arr.shift();
+log(num, arr);
+arr.unshift(1);
+log(arr);
+
+clear();
+//arr.splice(자리index, 삭제할 데이터 수, ...(추가할 데이터)); 
+var arr = [1, 2, 3, 4, 5];
+var arr2 = arr.splice(1, 2, 6, 7, 8);
+log(arr, arr2);
+
+var arr = [1, 2, 3, 4, 5];
+var arr2 = arr.splice(2, 1); //추가할 데이터를 넣지 않으면 빼기만 한다.
+log(arr, arr2);
+
+//pop, shift 는 추가 및 삭제한 data를 primitive type으로 return하는데 splice는 뺀 data를 array[]로 return 한다.
+
+//splice로 data를 추가하기
+var arr = [1, 2, 3, 4, 5];
+arr.splice(2, 0, 8);
+arr.splice(4, 0, 10);
+log(arr);
+
+// sort() - 정렬
+/* arr.sort(function(a, b){
+	return a - b;
+});
+log(arr); */
+arr.sort((a, b) => a - b); //오름차순
+log(arr);
+arr.sort((a, b) => b - a); //내림차순
+log(arr);
+
+
+//toString() : 배열을 문자열로 만들어 줌
+var arr = [1, 2, 3, 4, 5];
+var arrStr = arr.toString();
+log(arrStr);
+
+
+//반복문 loop
+for(var i=0; i<10; i++) {} 					//ES5
+for(var i in arr) {}						  	//ES5
+for(var i of arr) {}						 		//ES6
+while(3 > 5) {}									  	//ES5
+arr.forEach(function(i, a, s){}); 	//ES5
+var arr2 = arr.map(function(){}); 	//ES6
+var arr2 = arr.filter(function(){});//ES6
+
+
+clear();
+var obj = {
+	a: "A",
+	b: 'B',
+	c: 3
+};
+
+var arr = ['A', 'B', 'C'];
+log(obj.a);
+log(obj['a']);
+
+var key = Object.keys(obj);
+log(key);
+
+var value = Object.values(obj);
+log(value);
+
+var key2 = Object.keys(arr);
+log(key2);
+
+var value2 = Object.values(arr);
+log(value2);
+
+for(var i in obj) {
+	log(obj[i]);
+}
+
+clear();
+
+log(Object.entries(obj));
+
+for(var [k, v] of Object.entries(obj)) {
+	log(k, v);
+}
+
+arr.test = function() {
+	log("hi~");
+}
+
+for(var i in arr) {
+	log(i);
+}
+for(var v of arr) {
+	log(v);
+}
+
+// while(조건이 참이면) {}
+var arr = [1, 2, 3, 4, 5];
+
+while(arr.length > 2) {
+	log(arr.shift()); //배열에서 2개만 남을때까지 반복
+}
+log(arr);
+
+
+var arr = [1, 2, 3, 4, 5];
+var arr100 = [];
+arr.forEach(function(v, i, s){
+	arr100.push(v*100);
+}); //jQuery 의 each 문과 같다.
+log(arr, arr100);
+
+clear();
+
+var arr = [1, 2, 3, 4, 5];
+var arr100 = arr.map(function(v){
+	return v * 100;
+});
+log(arr, arr100);
+
+var arr = [1, 2, 3, 4, 5];
+var arr100 = arr.map(v => v * 100); //v 입력값 => v* 100 출력값
+log(arr, arr100);
+
+// y = x * x ; 이차함수
+function fn(x) {
+	return x * x;
+}
+
+var students = [
+	{name: "홍길순", kor: 90, eng: 60},
+	{name: "홍길만", kor: 95, eng: 75},
+	{name: "홍길동", kor: 80, eng: 80},
+	{name: "홍길남", kor: 60, eng: 45},
+	{name: "홍길손", kor: 98, eng: 55}
+];
+
+var stdKor = [];
+students.forEach(function(v){
+	if(v.kor >= 90) stdKor.push(v);
+});
+log(stdKor);
+
+clear();
+//위의 구문을 쉽게해주는 filter
+var stdKor = students.filter(function(v){
+	return v.kor>= 90;
+});
+log(stdKor);
+var stdKor = students.filter(v => v.kor>= 90);
+log(stdKor);
+</script>

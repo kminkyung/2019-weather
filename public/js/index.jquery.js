@@ -1,4 +1,5 @@
 // 전역변수
+var cityId;
 var key = '249ed7a4f8138c8a571bccfb3bd6af1c';
 var units = 'metric';
 var dailyAPI = 'https://api.openweathermap.org/data/2.5/weather';
@@ -22,22 +23,32 @@ function init() {
  });
 } 
 
+$(".navi > li").click(function(){
+	if($(this).index() == 0) init();
+	else if($(this).index() == 1) wrapChg("D");
+	else wrapChg("W")
+});
+
 // 화면 Show/Hide
 function wrapChg(type) {
 	if(type == 'D') {
-		$(".wrap-daily").fadeIn(); //show/hide를 해도 됨
-		$(".wrap-weekly").fadeOut();
-		$(".wrap-main").fadeOut();
+		$(".navi > li").removeClass("navi-sel");
+		$(".navi").eq(0).find("li").eq(1).addClass("navi-sel");
+		$(".wrap-daily").show(); //show/hide를 해도 됨
+		$(".wrap-weekly").hide();
+		$(".wrap-main").hide();
 	} 
 	else if(type == 'W') {
-		$(".wrap-daily").fadeOut();
-		$(".wrap-weekly").fadeIn();
-		$(".wrap-main").fadeOut();
+		$(".navi > li").removeClass("navi-sel");
+		$(".navi").eq(1).find("li").eq(2).addClass("navi-sel");
+		$(".wrap-daily").hide();
+		$(".wrap-weekly").show();
+		$(".wrap-main").hide();
 	}
 	else { //main
-		$(".wrap-daily").fadeOut();
-		$(".wrap-weekly").fadeOut();
-		$(".wrap-main").fadeIn();
+		$(".wrap-daily").hide();
+		$(".wrap-weekly").hide();
+		$(".wrap-main").show();
 	}
 }
 
@@ -51,36 +62,72 @@ function cityFn(res) {
 		$("#cities").append('<option value="'+cities[i].id+'">'+cities[i].name+'</option>');
 	}
 	$("#cities").change(function(){
+		cityId = $(this).val();
 		$.ajax({
 			type: "get",
-			url: dailyURL + "&id=" + $(this).val(),
+			url: dailyURL + "&id=" + cityId,
 			dataType: "json",
 			success: dailyFn
+		});
+		$.ajax({
+			type: "get",
+			url: weeklyURL + "&id=" + cityId,
+			dataType: "json",
+			success: weeklyFn
 		});
 	});
 }
 
 // 데일리정보 가져오기
 function dailyFn (res) {
-	console.log(res);
-	var $w = $(".wrap-daily");
-	$w.empty();
+	// console.log(res);
+	var $d = $(".wrap-daily > .conts"); //변수에 넣어주면 DOM 내 수정이 있어도 변수내용 한번만 바뀌니까 DOM 요소들을 변수에 넣어주는 습관을 들이자
+	$d.empty();
 
-/* 	$w.append(res.base+'<br>');
-	$w.append(res.clouds.all+'<br>');
-	$w.append(res.cod+'<br>');
-	$w.append(res.coord.lon+'<br>');
-	$w.append(res.coord.lat+'<br>');
-	$w.append(res.main.temp+'<br>');
-	$w.append(res.main.pressure+'<br>');
-	$w.append(res.main.humidity+'<br>');
-	$w.append(res.weather[0].description+'<br>');
-	$w.append(res.weather[0].icon+'<br>');
-	$w.append(res.weather[0].main+'<br>'); */
+/* 	$d.append(res.base+'<br>');
+	$d.append(res.clouds.all+'<br>');
+	$d.append(res.cod+'<br>');
+	$d.append(res.coord.lon+'<br>');
+	$d.append(res.coord.lat+'<br>');
+	$d.append(res.main.temp+'<br>');
+	$d.append(res.main.pressure+'<br>');
+	$d.append(res.main.humidity+'<br>');
+	$d.append(res.weather[0].description+'<br>');
+	$d.append(res.weather[0].icon+'<br>');
+	$d.append(res.weather[0].main+'<b>'); */
 
-	$w.append('<div class="text-center fa-3x py-3">오늘의 날씨</div>')
-	$w.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="w-50"></div>')
-	$w.append('<div class="text-center fa-2x py-3">현재온도: <b>'+res.main.temp+'</br>℃</div>');
-	$w.append('<div class="text-center fa-2x py-3">현재날씨: <b>'+res.weather[0].main+'</br></div>');
+	$d.append('<div class="text-center fa-3x py-3">오늘의 날씨</div>')
+	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="w-50" style="max-width: 200px;"></div>')
+	$d.append('<div class="text-center fa-2x py-3">현재온도: <b>'+res.main.temp+'</b>℃</div>');
+	$d.append('<div class="text-center fa-2x py-3">현재날씨: <b>'+res.weather[0].main+'</br></div>');
 	wrapChg("D");
+}
+
+
+// 위클리정보 가져오기
+function weeklyFn (res) {
+	console.log(res);
+	var html = '';
+	var $w = $(".wrap-weekly > .conts")
+	$w.empty();
+	for(var v of res.list) {
+		html = `
+		<li class="w-item">
+		<div>
+		<img src="../img/${v.weather[0].icon}.png" class="w-100">
+		</div>
+		<ul>
+		<li class="w-temp">
+		<span>${v.main.temp}</span>℃
+		</li>
+		<li class="w-desc">
+		<span>${v.weather[0].main}</span>
+		<span>${v.weather[0].description}</span>
+		</li>
+		<li class="w-date">${v.dt_txt}</li>
+		</ul>
+		</li>
+		`;
+		$w.append(html);
+	} 
 }
