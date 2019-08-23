@@ -97,7 +97,7 @@ function dailyFn (res) {
 	$d.append(res.weather[0].main+'<b>'); */
 
 	$d.append('<div class="text-center fa-3x py-3">오늘의 날씨</div>')
-	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="w-50" style="max-width: 200px;"></div>')
+	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="w-100 daily-img"</div>')
 	$d.append('<div class="text-center fa-2x py-3">현재온도: <b>'+res.main.temp+'</b>℃</div>');
 	$d.append('<div class="text-center fa-2x py-3">현재날씨: <b>'+res.weather[0].main+'</br></div>');
 	wrapChg("D");
@@ -107,10 +107,12 @@ function dailyFn (res) {
 // 위클리정보 가져오기
 function weeklyFn (res) {
 	console.log(res);
+	var kts;
 	var html = '';
 	var $w = $(".wrap-weekly > .conts")
 	$w.empty();
 	for(var v of res.list) {
+		kts = new Date(new Date(v.dt_txt).getTime()+(9*60*60*1000));
 		html = `
 		<li class="w-item">
 		<div>
@@ -124,7 +126,7 @@ function weeklyFn (res) {
 		<span>${v.weather[0].main}</span>
 		<span>${v.weather[0].description}</span>
 		</li>
-		<li class="w-date">${v.dt_txt}</li>
+		<li class="w-date">${dspDate(kts, 2).substring()}</li>
 		</ul>
 		</li>
 		`;

@@ -18,7 +18,28 @@ function init(){
 	ajax.send();
 }
 
+// 네비게이션 이벤트 처리
+// console.log(document.querySelectorAll(".navi > li"));
+
+for(var v of document.querySelectorAll(".navi")) {
+		v.addEventListener("click", (e) => {
+			switch(e.target.outerText) {
+				case "DAILY":
+					wrapChg("D");
+					break;
+				case "WEEKLY":
+					wrapChg("W");
+					break;
+				default:
+					init();
+					break;
+			}
+		});
+}
+
+
 // wrapChg - 화면 Show/Hide
+
 /* function wrapChg(type) {
 	switch(type) {
 		case "D":
@@ -38,31 +59,49 @@ function init(){
 			break;
 	}
 } */
+
+/* function navClear(_obj) { 
+	//_obj = document.querySelectorAll(".navi");
+
+	_obj.forEach((v, i)=> {
+		v.querySelectorAll("li").forEach((v2, i2) => { //nav>li
+			classList.remove("navi-sel"); //각각의 li에 접근해서 remove해줌
+		});
+	});
+} */
+
 function wrapChg(type) {
+	const _daily = document.querySelector(".wrap-daily");
+	const _weekly = document.querySelector(".wrap-weekly");
+	const _main = document.querySelector(".wrap-main");
+	const _nav = document.querySelectorAll(".navi") //navi가 2개이므로 querySelectorAll. querySelector는 첫번째 .navi만 찾아준다.
+
 	switch(type) {
 		case "D":
-			document.querySelector(".wrap-daily").classList.add("d-block");
-			document.querySelector(".wrap-daily").classList.remove("d-none");
-			document.querySelector(".wrap-weekly").classList.add("d-none");
-			document.querySelector(".wrap-weekly").classList.remove("d-block");
-			document.querySelector(".wrap-main").classList.add("d-none");
-			document.querySelector(".wrap-main").classList.remove("d-block");
+			// _nav[0].children[1].classList.add("navi-sel");
+			_daily.classList.add("d-block");
+			_daily.classList.remove("d-none");
+			_weekly.classList.add("d-none");
+			_weekly.classList.remove("d-block");
+			_main.classList.add("d-none");
+			_main.classList.remove("d-block");
 			break; //break를 만나면 switch문을 빠져나간다.
 		case "W":
-			document.querySelector(".wrap-daily").classList.add("d-none");
-			document.querySelector(".wrap-daily").classList.remove("d-block");
-			document.querySelector(".wrap-weekly").classList.add("d-block");
-			document.querySelector(".wrap-weekly").classList.remove("d-none");
-			document.querySelector(".wrap-main").classList.add("d-none");
-			document.querySelector(".wrap-main").classList.remove("d-block");
+			// _nav[0].children[2].classList.add("navi-sel");
+			_daily.classList.add("d-none");
+			_daily.classList.remove("d-block");
+			_weekly.classList.add("d-block");
+			_weekly.classList.remove("d-none");
+			_main.classList.add("d-none");
+			_main.classList.remove("d-block");
 			break;
 		default:
-				document.querySelector(".wrap-daily").classList.add("d-none");
-				document.querySelector(".wrap-daily").classList.remove("d-block");
-				document.querySelector(".wrap-weekly").classList.add("d-none");
-				document.querySelector(".wrap-weekly").classList.remove("d-block");
-				document.querySelector(".wrap-main").classList.add("d-block");
-				document.querySelector(".wrap-main").classList.remove("d-none");
+				_daily.classList.add("d-none");
+				_daily.classList.remove("d-block");
+				_weekly.classList.add("d-none");
+				_weekly.classList.remove("d-block");
+				_main.classList.add("d-block");
+				_main.classList.remove("d-none");
 			break;
 	}
 }
@@ -73,7 +112,9 @@ function cityFn() {
 	if(this.readyState == 4 && this.status == 200) {
 		var _city = document.querySelector("#cities");
 		var res = JSON.parse(this.responseText).cities;
-		var _elem = document.createElement('option');
+		_city.innerHTML = '<option value="" selected>도시를 선택해주세요.</option>';
+		for(var v of res) _city.innerHTML += `<option value="${v.id}">${v.name}</option>`;
+/* 		var _elem = document.createElement('option');
 		var title = document.createTextNode('도시를 선택해주세요.');
 		_elem.appendChild(title);
 		_elem.setAttribute("value", "");
@@ -86,15 +127,17 @@ function cityFn() {
 			title = document.createTextNode(res[i].name);
 			_elem.setAttribute("value", res[i].id);
 			_elem.appendChild(title);
-			_city.appendChild(_elem);
-		}
-		_city.addEventListener("change", function(){
+			_city.appendChild(_elem); }*/
+		_city.addEventListener("change", function(e){
 			var ajax = new XMLHttpRequest();
 			ajax.onreadystatechange = dailyFn;
-			ajax.open('GET', dailyURL +"&id="+ this.value, true);
+			ajax.open('GET', dailyURL + "&id=" + e.target.value, true);
 			ajax.send();
+			var ajax2 = new XMLHttpRequest();
+			ajax2.onreadystatechange = weeklyFn;
+			ajax2.open('GET', weeklyURL + "&id=" + e.target.value, true);
+			ajax2.send();
 		});
-
 	}
 }
 
@@ -105,13 +148,13 @@ function dailyFn() {
 		let iconSrc = `../img/${res.weather[0].icon}.png`; 
 		let temp = `현재온도: <b>${res.main.temp}</b>℃`;
 		let desc = `현재날씨: ${res.weather[0].main}`;
-		let _wrap = document.querySelector(".wrap-daily");
+		let _wrap = document.querySelector(".wrap-daily").querySelector(".conts");
 		let _title = document.createElement("div");
 		let _img = document.createElement("div");
 		let _temp = document.createElement("div");
 		let _desc = document.createElement("div");
 		_title.innerHTML = '오늘의 날씨';
-		_img.innerHTML = `<img src="${iconSrc}" class="w-50">`; //template string enter쳐도됨
+		_img.innerHTML = `<img src="${iconSrc}" class="w-100 daily-img">`; //template string enter쳐도됨
 		_temp.innerHTML = temp;
 		_desc.innerHTML = desc;
 		_title.setAttribute("class", "text-center py-3 fa-3x")
@@ -124,5 +167,36 @@ function dailyFn() {
 		_wrap.appendChild(_temp);
 		_wrap.appendChild(_desc);
 		wrapChg("D");
+	}
+}
+
+// 위클리 정보 가져오기
+function weeklyFn() {
+	if(this.readyState == 4 && this.status == 200) {
+		let res = JSON.parse(this.responseText);
+		var kts;
+		var html = '';
+		var _conts = document.querySelector(".wrap-weekly > .conts");
+		_conts.innerHTML = '';
+		for(var v of res.list) {
+			kts = new Date(new Date(v.dt_txt).getTime()+(9*60*60*1000));
+			html = `
+			<li class="w-item">
+			<div>
+			<img src="../img/${v.weather[0].icon}.png" class="w-100">
+			</div>
+			<ul>
+			<li class="w-temp">
+			<span>${v.main.temp}</span>℃
+			</li>
+			<li class="w-desc">
+			<span>${v.weather[0].main}</span>
+			<span>${v.weather[0].description}</span>
+			</li>
+			<li class="w-date">${dspDate(kts, 2)} 예보</li>
+			</ul>
+			</li>`;
+			_conts.innerHTML += html;
+		} 
 	}
 }
