@@ -1,70 +1,126 @@
-html, body {
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Nunito:200,300,400,600,700,800,900&display=swap');
+/* 
+font-family: 'Lato', sans-serif;
+font-family: 'Nunito', sans-serif;
+ */
+
+html,
+body {
 	width: 100%;
 	height: 100%;
+	font-family: 'Lato', sans-serif;
 }
 
 body {
-	background: url(../img/sky.jpg) no-repeat center;
+	background-image: radial-gradient(rgb(255, 79, 79), white);
 	background-size: cover;
 }
-.container {padding: 0}
+
+.main {
+	padding: 6vw;
+	height: 100%;
+	width: 100%;
+}
+
+.title {
+	font-size: 6vw;
+	line-height: 1.1;
+}
+
+.wrap-main {
+	position: relative;
+	top: 30%;
+	transform: translateY(-50%);
+}
+
+.select-city {
+	margin: auto;
+	width: 200px;
+	border: none;
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+
+
 .wrap {
 	height: 100%;
 	width: 100%;
 }
+
 .navi {
 	height: 60px;
 	line-height: 60px;
 }
-.navi > li {
+
+.navi>li {
 	flex: 1 0 33.3333%;
 	cursor: pointer;
-	background-color: #333;
+	background-color: white;
 	color: #aaa;
 }
-.navi > .navi-sel {
-	background-color: #111;
-	border: 1px solid #666;
-	color: lemonchiffon;
-	border-bottom: none;
+
+.navi>.navi-sel {
+	background-color: white;
+	color: #111;
 }
 
-.wrap > .conts {
-	height: calc(100% - 60px);
-	color: #fff;
-	background-color: rgba(0, 0, 0, 0.7);
-	overflow: auto;
+.wrap>.conts {
+	/* height: calc(100% - 60px); */
+	width: 100%;
+	height: 100%;
+	color: #111;
+	background-color: white;
+	/* overflow: auto; */
 }
-.wrap-daily > .conts {padding: 2rem;}
-.daily-img {max-width: 180px;}
-.wrap-weekly > .conts {
+
+.wrap-daily>.conts {
+	padding: 2rem;
+}
+
+.daily-img {
+	max-width: 180px;
+}
+
+.wrap-weekly>.conts {
 	display: flex;
 	align-items: flex-start;
 	align-content: flex-start;
 	flex-wrap: wrap;
 }
+
 .w-item {
 	display: flex;
 	align-items: center;
 	flex: 0 0 100%;
 	border-bottom: 1px solid #999;
 }
-.w-item > div {
+
+.w-item>div {
 	flex: 0 0 25%;
 	padding: 1.5rem;
 }
-.w-item > ul {flex: 0 0 75%;}
-.w-item > div > img {max-width: 150px;}
-.w-item .w-temp > span {
+
+.w-item>ul {
+	flex: 0 0 75%;
+}
+
+.w-item>div>img {
+	max-width: 150px;
+}
+
+.w-item .w-temp>span {
 	font-weight: bold;
 	font-size: 1.25rem;
 }
-.w-item .w-desc > :first-child {
+
+.w-item .w-desc> :first-child {
 	font-size: 1.125rem;
 }
-.w-item .w-desc > :last-child {
+
+.w-item .w-desc> :last-child {
 	color: #ddd;
 }
+
 .w-item .w-date {
 	font-size: 0.875rem;
 	color: #aaa;
@@ -72,5 +128,7 @@ body {
 
 
 @media screen and (min-width: 768px) {
-	.w-item {flex: 0 0 50%;}
+	.w-item {
+		flex: 0 0 50%;
+	}
 }

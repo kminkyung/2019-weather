@@ -36,19 +36,19 @@ function wrapChg(type) {
 		$(".navi").eq(0).find("li").eq(1).addClass("navi-sel");
 		$(".wrap-daily").show(); //show/hide를 해도 됨
 		$(".wrap-weekly").hide();
-		$(".wrap-main").hide();
+		$(".main").hide();
 	} 
 	else if(type == 'W') {
 		$(".navi > li").removeClass("navi-sel");
 		$(".navi").eq(1).find("li").eq(2).addClass("navi-sel");
 		$(".wrap-daily").hide();
 		$(".wrap-weekly").show();
-		$(".wrap-main").hide();
+		$(".main").hide();
 	}
 	else { //main
 		$(".wrap-daily").hide();
 		$(".wrap-weekly").hide();
-		$(".wrap-main").show();
+		$(".main").show();
 	}
 }
 
@@ -57,7 +57,7 @@ function wrapChg(type) {
 function cityFn(res) {
 	var cities = res.cities;
 	$("#cities").empty();
-	$("#cities").append('<option value="" selected>도시를 선택해주세요.</option>');
+	$("#cities").append('<option value="" selected>Select Your City</option>');
 	for(var i in cities) {
 		$("#cities").append('<option value="'+cities[i].id+'">'+cities[i].name+'</option>');
 	}
@@ -80,10 +80,11 @@ function cityFn(res) {
 
 // 데일리정보 가져오기
 function dailyFn (res) {
-	// console.log(res);
+	console.log(res);
 	var $d = $(".wrap-daily > .conts"); //변수에 넣어주면 DOM 내 수정이 있어도 변수내용 한번만 바뀌니까 DOM 요소들을 변수에 넣어주는 습관을 들이자
 	$d.empty();
-
+	var dt = String(new Date()).split(" ");
+	// var kt = new Date(new Date(res.dt).getTime()+(9*60*60*1000));
 /* 	$d.append(res.base+'<br>');
 	$d.append(res.clouds.all+'<br>');
 	$d.append(res.cod+'<br>');
@@ -96,10 +97,12 @@ function dailyFn (res) {
 	$d.append(res.weather[0].icon+'<br>');
 	$d.append(res.weather[0].main+'<b>'); */
 
-	$d.append('<div class="text-center fa-3x py-3">오늘의 날씨</div>')
-	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="w-100 daily-img"</div>')
-	$d.append('<div class="text-center fa-2x py-3">현재온도: <b>'+res.main.temp+'</b>℃</div>');
-	$d.append('<div class="text-center fa-2x py-3">현재날씨: <b>'+res.weather[0].main+'</br></div>');
+
+	$d.append('<div class="text-center fa-3x py-3">'+res.name+'</div>');
+	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="daily-img"</div>');
+	$d.append('<div class="text-center fa-2x py-3"><b>'+res.weather[0].main+'</br></div>');
+	$d.append('<div class="text-center fa-2x py-3"><b>'+res.main.temp+'</b>℃</div>');
+	$d.append('<div class="text-center fa-3x py-3">'+dt[0]+" "+dt[1]+" "+dt[2]+'</div>');
 	wrapChg("D");
 }
 
