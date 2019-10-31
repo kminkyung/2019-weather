@@ -97,12 +97,29 @@ function dailyFn (res) {
 	$d.append(res.weather[0].icon+'<br>');
 	$d.append(res.weather[0].main+'<b>'); */
 
-
-	$d.append('<div class="text-center fa-3x py-3">'+res.name+'</div>');
-	$d.append('<div class="text-center py-3"><img src="../img/'+res.weather[0].icon+'.png" class="daily-img"</div>');
-	$d.append('<div class="text-center fa-2x py-3"><b>'+res.weather[0].main+'</br></div>');
-	$d.append('<div class="text-center fa-2x py-3"><b>'+res.main.temp+'</b>℃</div>');
-	$d.append('<div class="text-center fa-3x py-3">'+dt[0]+" "+dt[1]+" "+dt[2]+'</div>');
+$d.append(`
+<div class="weather-icon"><img src="../img/${res.weather[0].icon}.png" class="img"></div>
+<div class="city-name">${res.name}</div>
+<div class="city-weather">${res.weather[0].main}</div>
+<ul class="city-desc">
+<li class="desc-temp">${Math.floor(res.main.temp)}˚</li>
+<li class="desc-detail">
+<div class="desc-status">${res.weather[0].description}</div>
+<div class="desc-humidity">Humidity : ${res.main.humidity}%</div>
+<div class="desc-wind">Wind : ${res.wind.speed} Km/h</div>
+</li>
+</ul>
+<div class="city-date">
+<div class="date-week">${dt[0]}</div>
+<div class="date-dmonth">${dt[1]} ${dt[2]}</div>
+</div>
+`);
+/* 	$d.append('<div class="text-center py-3 weather-icon"><img src="../img/'+res.weather[0].icon+'.png" class="img"</div>');
+	$d.append('<div class="text-center fa-3x py-3 city-name">'+res.name+'</div>');
+	$d.append('<div class="text-center fa-2x py-3 city-weather"><b>'+res.weather[0].main+'</br></div>');
+	$d.append('<div class="text-center fa-2x py-3 city-temp"><b>'+Math.floor(res.main.temp)+'</b>℃</div>');
+	$d.append('<div class="city-date"><div class="text-center fa-3x py-3 date-week">'+dt[0]+'</div>');
+	$d.append('<div class="text-center fa-3x py-3 date-dmonth">'+dt[1]+" "+dt[2]+'</div></div>'); */
 	wrapChg("D");
 }
 
@@ -114,22 +131,24 @@ function weeklyFn (res) {
 	var html = '';
 	var $w = $(".wrap-weekly > .conts")
 	$w.empty();
+	$w.append(`<div class="city-name">${res.city.name}</div>`);
 	for(var v of res.list) {
 		kts = new Date(new Date(v.dt_txt).getTime()+(9*60*60*1000));
+		var week = dateEng(kts, 4)
 		html = `
 		<li class="w-item">
 		<div>
 		<img src="../img/${v.weather[0].icon}.png" class="w-100">
 		</div>
-		<ul>
-		<li class="w-temp">
-		<span>${v.main.temp}</span>℃
-		</li>
-		<li class="w-desc">
-		<span>${v.weather[0].main}</span>
-		<span>${v.weather[0].description}</span>
-		</li>
-		<li class="w-date">${dspDate(kts, 2).substring()}</li>
+		<ul class="w-info">
+			<li class="w-temp">
+			<span>${Math.floor(v.main.temp)}˚</span>
+			</li>
+			<li class="w-desc">
+			<span class="w-week">${week}</span>
+			<span class="w-status">${v.weather[0].main}</span>
+			<div class="w-date">${dspDate(kts, 2).substring()}</div>
+			</li>
 		</ul>
 		</li>
 		`;
