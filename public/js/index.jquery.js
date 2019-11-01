@@ -11,6 +11,8 @@ var dailyURL = dailyAPI + '?appid=' + key + '&units=' + units;
 var weeklyURL = weeklyAPI + '?appid=' + key + '&units=' + units;
 
 
+
+
 //프로그램 시작
 init();
 function init() {
