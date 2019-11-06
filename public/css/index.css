@@ -169,8 +169,9 @@ html, body {
 }
 
 .w-item {
+	padding-left: 2.5rem;
 	display: flex;
-	justify-content: center;
+	justify-content: left;
 	align-items: center;
 	flex: 0 0 100%;
 	/* border: 1px solid red; */
