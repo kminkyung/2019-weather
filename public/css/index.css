@@ -13,8 +13,8 @@ html, body {
 
 
 .main {
-	background-color: white;
-	/* background-image: radial-gradient(rgb(255, 79, 79), white); */
+	/* background-color: white; */
+	background-image: linear-gradient(rgb(243, 235, 229), rgb(206, 237, 255));
 	/* background-size: 100% 100%; */
 	/* animation-name: colorChange;
 	animation-iteration-count: infinite;
