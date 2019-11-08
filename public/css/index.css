@@ -112,20 +112,20 @@ html, body {
 	/* border: 1px solid red; */
 }
 .weather-icon {
-	margin: 2rem 0;
+	margin: 1rem 0;
 }
 .weather-icon > img {
 	width: 80%;
 }
 .city-name {
 	font-size: 6vh;
-	margin-top: 8vh;
+	margin-top: 4vh;
 	width: 100%;
 	text-align: center;
 }
 .city-weather {
 	font-size: 3vh;
-	margin-bottom: 8vh;
+	margin-bottom: 4vh;
 }
 
 .city-desc {
@@ -134,7 +134,7 @@ html, body {
 	align-items: center;
 	text-align: left;
 	/* border: 1px solid slateblue; */
-	margin: 8vh 0;
+	margin: 4vh 0;
 }
 .desc-status {
 	font-size: 3vh;
